@@ -55,7 +55,12 @@ asyncio.run(main())
 workd 1-second done
 long_sleep 10-second done
 
+# 1. await - 後面接awaitable objects(Promises) - Coroutines(async function) | Task(Promise) | Future(setTimeOut -> resolve(job, 1000))
+# 2. asyncio.create_tasks -> Immediately executing a Promise
+# 3. asyncio.gather(*tasks) run multiple awaitables concurrently -> Promise.all([promse1, promise2, ...])
+
 由於只用了一個event-loop，會優先把不需要等待的做完
 """
+    
 
 
