@@ -12,11 +12,12 @@ async def main():
     start_time = time.time()
     task1 = asyncio.create_task(fetch_data (1, 2))
     task2 = asyncio.create_task(fetch_data (2, 3))
-    task3 = asyncio.create_task(fetch_data (3, 1))
-    
     
     result1 = await task1
     result2 = await task2
+    
+    task3 = asyncio.create_task(fetch_data (3, 1))
+
     result3 = await task3
     end_time = time.time()
 
@@ -39,4 +40,16 @@ Coroutine 3 starting to fetch data.
 {'id': 2, 'data': 'Sample data from coroutine 2'} 
 {'id': 3, 'data': 'Sample data from coroutine 3'}
 total_time spend: 3.00
+"""
+
+"""
+我們也可以透過await的順序(比如先等result1, result2做完)，再run result3
+這樣一來就可以控制async function的順序for our use cases
+Coroutine 1 starting to fetch data.
+Coroutine 2 starting to fetch data.
+Coroutine 3 starting to fetch data.
+{'id': 1, 'data': 'Sample data from coroutine 1'} 
+{'id': 2, 'data': 'Sample data from coroutine 2'} 
+{'id': 3, 'data': 'Sample data from coroutine 3'}
+total_time spend: 4.00
 """
