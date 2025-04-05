@@ -32,7 +32,7 @@ async def main():
 
     async with aiohttp.ClientSession() as session:
         tasks = [do_request(session, url) for url in urls]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks) # *** gather() is designed to take indiviual Coroutine objects as arguments, not a list of Coroutines ***
 
     end_time = time.time()
 
@@ -40,6 +40,6 @@ async def main():
     print(f'\nTotal execution timw with asnycio: {total_time:.2f}')
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+
+asyncio.run(main())
     
