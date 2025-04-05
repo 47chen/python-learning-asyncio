@@ -33,6 +33,8 @@ async def modify_shared_resource():
 
 
 async def main():
+    # tasks = (modify_shared_resource() for _ in range(5))
+    # await asyncio.gather(*tasks)
     await asyncio.gather(*(modify_shared_resource() for _ in range(5)))
 
 
