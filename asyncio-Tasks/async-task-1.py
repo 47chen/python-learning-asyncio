@@ -20,8 +20,8 @@ async def main():
     # the event loop needs control first
 
     # Wait for 5 seconds
-    print('--- main(): sleep ---')
-    await asyncio.sleep(10) # <- hits a sleep for 10 seconds
+    # print('--- main(): sleep ---')
+    # await asyncio.sleep(10) # <- hits a sleep for 10 seconds
     # While the main coroutine is 'sleeping', the event loop gives control to other schedules tasks - like `cancel_me()`
     # This lets cancel_me() begin execution.
 
