@@ -57,6 +57,4 @@ Fetching data... id: 2
 Data fetched, id: 2
 Received result: {"data", "Some data", "id": 2}
 
-
-
 """
