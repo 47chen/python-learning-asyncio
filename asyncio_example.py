@@ -12,8 +12,10 @@ async def do_request(session, url):
     Returns:
         str: The response text
     """
-    # Async context manager for making the request
+    # Async context manager for making the request\
+    # session.get(url) => fetch(url) in js : Async http GET call
     async with session.get(url) as response:
+        # session.get(url) is an async HTTP request
         print(f"{url} => {response.status}")
         return await response.text()
 
@@ -33,11 +35,13 @@ async def main():
     start_time = time.time()
     
     # Create an async HTTP session
+    # async with ==> finally in JS : Manage async cleanup safely
     async with aiohttp.ClientSession() as session:
         # Create a list of tasks (coroutines) for each URL
         tasks = [do_request(session, url) for url in urls]
         # Run all tasks concurrently and wait for all to complete
         await asyncio.gather(*tasks)
+        # await asyncio.gather([...]) => Promise.all([...]) in js: Runs many coroutines concurrently
     
     # End timing
     end_time = time.time()
