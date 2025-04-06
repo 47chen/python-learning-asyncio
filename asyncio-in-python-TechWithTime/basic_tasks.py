@@ -13,22 +13,19 @@ async def main():
     task1 = asyncio.create_task(fetch_data (1, 2))
     task2 = asyncio.create_task(fetch_data (2, 3))
     
-    result1 = await task1
-    result2 = await task2
+    # result1 = await task1
+    # result2 = await task2
     
     task3 = asyncio.create_task(fetch_data (3, 1))
 
-    result3 = await task3
+    # result3 = await task3
     end_time = time.time()
 
     total_time = end_time - start_time
 
-    print(result1, f'\n{result2}', f'\n{result3}')
+    # print(result1, f'\n{result2}', f'\n{result3}')
     print(f'total_time spend: {total_time:.2f}')
-
-
 asyncio.run(main())
-
 
 """
 A Task is to schedule a coroutine to run asap and allows us to run coroutines simultaneously
