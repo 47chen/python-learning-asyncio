@@ -30,40 +30,73 @@ import random
 
 # asyncio.run(main())
 
-async def fetch(session, url): # get_data 共享一個session by aioHttp.ClientSession() as session
-    try:
-        async with session.get(url) as response:
+# async def fetch(session, url): # get_data 共享一個session by aioHttp.ClientSession() as session
+#     try:
+#         async with session.get(url) as response:
             
-            await asyncio.sleep(0.1) # simulated IO 
-            return await response.json()
-    except Exception as e:
-        print('something went wrong', e)
-        return None
+#             await asyncio.sleep(0.1) # simulated IO 
+#             return await response.json()
+#     except Exception as e:
+#         print('something went wrong', e)
+#         return None
 
-async def get_users(user_ids):
-    url = f'https://jsonplaceholder.typicode.com/users'
-    try:
-        async with aiohttp.ClientSession() as session:
-            coros = [asyncio.create_task(fetch(session, f'{url}/{user_id}')) for user_id in user_ids]
+# async def get_users(user_ids):
+#     url = f'https://jsonplaceholder.typicode.com/users'
+#     try:
+#         async with aiohttp.ClientSession() as session:
+#             coros = [asyncio.create_task(fetch(session, f'{url}/{user_id}')) for user_id in user_ids]
             
-            users = await asyncio.gather(*coros)
-            return users
+#             users = await asyncio.gather(*coros)
+#             return users
 
-    except Exception as e:
-        print('sometime went wrong', e)
-        return None
+#     except Exception as e:
+#         print('sometime went wrong', e)
+#         return None
 
-async def main():
-    user_ids = [1,2,3,4]
-    results = await get_users(user_ids)
+# async def main():
+#     user_ids = [1,2,3,4]
+#     results = await get_users(user_ids)
 
-    for result in results:
-        print(result)
+#     for result in results:
+#         print(result)
 
-asyncio.run(main())
+# asyncio.run(main())
 
 # url = f'https://jsonplaceholder.typicode.com/users/{user_id}'
 # session.get(url) as session =~ fetch(url) in js
 # aioHttp.ClientSession as session open a session for all request to improve efficiency
 
+"""
+parallel fetch urls using aioHttp.ClientSession()
+"""
 
+async def fetch(url, session):
+    try:
+        async with session.get(url) as response:
+            return await response.json()
+    
+    except Exception as e:
+        print(f'Something when wrong when fetching data from {url}', e)
+
+async def get_user(user_ids):
+    url = f'https://jsonplaceholder.typicode.com/users'
+    try:
+        async with aiohttp.ClientSession() as session:
+            tasks = [asyncio.create_task(fetch(f'{url}/{user_id}', session)) for user_id in user_ids]
+            
+            results = await asyncio.gather(*tasks)
+            return results
+        
+    except Exception as e:
+        print(f'Something went wrong when get specific user', e)
+        return None
+
+
+async def main():
+    user_ids = [1, 2, 3, 4]
+    user_data = await get_user(user_ids)
+    
+    for data in user_data:
+        print(data)
+
+asyncio.run(main())
