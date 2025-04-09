@@ -103,6 +103,7 @@ async def main():
     chef_coroutines = [chef(chef_id=i + 1) for i in range(chef_count)]
     tasks = [cashier(order_count), *chef_coroutines]
 
+    await dq.join()
     # Start the cashier and chefs
     await asyncio.gather(*tasks)
 
