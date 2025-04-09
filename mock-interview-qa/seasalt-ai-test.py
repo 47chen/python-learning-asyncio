@@ -62,7 +62,7 @@ async def cashier(order_count: int):
         print(f'Added order {i}')
 
     # ⭐️ Signal the chefs to stop by adding sentinel values
-    for _ in range(chef_count):
+    for _ in range(order_count):
         await dq.put(None)
 
     pass
@@ -96,13 +96,13 @@ async def chef(chef_id: int):
         
 
 async def main():
-    global chef_count # ⭐️
-    chef_count = 2 # ⭐️ Make chec_count accessible in cashier function
+    chef_count = 2 
     order_count = 5
     # Some asyncio primitives may be needed to be passed as arguments
     chef_coroutines = [chef(chef_id=i + 1) for i in range(chef_count)]
     tasks = [cashier(order_count), *chef_coroutines]
-
+    
+    # ⭐️ Until all tasks are complete
     await dq.join()
     # Start the cashier and chefs
     await asyncio.gather(*tasks)
