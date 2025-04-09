@@ -44,7 +44,7 @@ async def get_users(user_ids):
     url = f'https://jsonplaceholder.typicode.com/users'
     try:
         async with aiohttp.ClientSession() as session:
-            coros = [fetch(session, f'{url}/{user_id}') for user_id in user_ids]
+            coros = [asyncio.create_task(fetch(session, f'{url}/{user_id}')) for user_id in user_ids]
             
             users = await asyncio.gather(*coros)
             return users

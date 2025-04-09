@@ -46,32 +46,31 @@ import random
 
 # asyncio.run(main())
 
-async def fetch_data(url):
-    print(f'Starting fetching data via -> {url}')
-    await asyncio.sleep(random.uniform(0.5, 10)) # simulate IO operation
-
-    return f'Fetch data successfully from {url}'
+async def fetch(url):
+    print(f'Fetching data... from {url}')
+    await asyncio.sleep(2) # simulate IO operations
+    
+    return f'Data successfully fetch from {url}'
 
 async def main():
-    s = time.time()
-    urls = [f'https://api.service/{i}' for i in range(5)]
+    urls = [f'https://api.service/{i}' for i in range(10)]
+    # tasks = [fetch(url) for url in urls]   # Tasks => Coroutines
+    tasks = []
+    for url in urls:
+        task = asyncio.create_task(fetch(url))
+        tasks.append(task)
     
-    tasks = [asyncio.create_task(fetch_data(url)) for url in urls]
-    
-    results = await asyncio.gather(*tasks) # awaitable tasks(future:<_GatheringFuture)
+    results = await asyncio.gather(*tasks)
 
     for result in results:
         print(result)
-    e = time.time()
-    t = e - s
-    print(f'Total time: {t:.2f}')
 
 asyncio.run(main())
-    
 
 
 """
 1. asyncio.create_task only create(schedule) tasks
 2. run all request in parallel (concurrently) - use asyncio.gather(*tasks)
 = = = = = = = = = = = = = = = = = = = = =
+https://api.service/{i}
 """
